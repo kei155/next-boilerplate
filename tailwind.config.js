@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+
 function range(start, end) {
   const array = []
   for (let i = start; i < end; ++i) {
