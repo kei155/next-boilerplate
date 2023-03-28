@@ -5,12 +5,12 @@ import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home () {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
         <p>
-          <Link href='/test'>Get started by editing&nbsp;</Link>
+          <Link href="/test">Get started by editing&nbsp;</Link>
           <code className={styles.code}>app/page.tsx</code>
         </p>
         <div>
@@ -19,7 +19,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+                        By{' '}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -42,7 +42,13 @@ export default function Home() {
           priority
         />
         <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
+          <Image
+            src="/thirteen.svg"
+            alt="13"
+            width={40}
+            height={31}
+            priority
+          />
         </div>
       </div>
 
@@ -54,10 +60,11 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
+                        Docs <span>-&gt;</span>
           </h2>
           <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
+                        Find in-depth information about Next.js features and
+                        API.
           </p>
         </a>
 
@@ -68,9 +75,11 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
+                        Templates <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
+          <p className={inter.className}>
+                        Explore the Next.js 13 playground.
+          </p>
         </a>
 
         <a
@@ -80,10 +89,11 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
+                        Deploy <span>-&gt;</span>
           </h2>
           <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
+                        Instantly deploy your Next.js site to a shareable URL
+                        with Vercel.
           </p>
         </a>
       </div>

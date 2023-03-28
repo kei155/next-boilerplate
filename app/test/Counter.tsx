@@ -1,35 +1,40 @@
 'use client'
 
-import useExampleStore from "@/stores/useExampleStore"
-import { useStore } from "zustand"
+import useSnackBar from '@/hooks/useSnackBar'
+import useExampleStore from '@/stores/useExampleStore'
+import Todos from './Todos'
 
 export default function Counter() {
-    // const {
-    //     count,
-    //     doubleCount,
-    //     increment,
-    // } = useExampleStore(state => ({
-    //     count: state.count,
-    //     doubleCount: state.computeDouble(),
-    //     increment: state.increment,
-    // }))
-    const {
-        count,
-        doubleCount,
-        increment,
-    } = useExampleStore(state => ({
-        count: state.count,
-        doubleCount: state.computeDouble(),
-        increment: state.increment,
-    }))
+  const { toast } = useSnackBar()
 
-    return (
-        <div>
-            <div>Count: {count}</div>
-            <div>Double Count: {doubleCount}</div>
-            <div>
-                <button onClick={increment}>증가</button>
-            </div>
-        </div>
-    )
+  const openToast = () => {
+    toast.success('ㅁㄴㄹㅇ')
+  }
+
+  // const {
+  //     count,
+  //     doubleCount,
+  //     increment,
+  // } = useExampleStore(state => ({
+  //     count: state.count,
+  //     doubleCount: state.computeDouble(),
+  //     increment: state.increment,
+  // }))
+  const { count, doubleCount, increment } = useExampleStore((state) => ({
+    count: state.count,
+    doubleCount: state.computeDouble(),
+    increment: state.increment
+  }))
+
+  return (
+    <div className='h-10 overflow-y-auto scrollbar-hide w-90pxr'>
+      <div className=' h-96'>Count: {count}</div>
+      <div>Double Count: {doubleCount}</div>
+      <div>
+        <button onClick={increment}>증가</button>
+      </div>
+      <button onClick={openToast}>토스트</button>
+      <Todos></Todos>
+    </div>
+  )
 }
