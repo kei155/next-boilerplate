@@ -27,7 +27,7 @@ export default function Counter() {
   }))
 
   return (
-    <div className='h-10 overflow-y-auto scrollbar-hide w-90pxr'>
+    <div className='h-10 overflow-y-auto scrollbar-hide w-full'>
       <div className=' h-96'>Count: {count}</div>
       <div>Double Count: {doubleCount}</div>
       <div>

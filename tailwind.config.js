@@ -17,10 +17,17 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#3A4F7A',
+        secondary: '#FFC6D3',
+        backup: '#FEA1BF',
+        backback: '#E98EAD'
+      }
+    },
 
     spacing: {
-      ...range(1, 100).reduce((acc, px) => {
+      ...range(0, 101).reduce((acc, px) => {
         acc[`${px}pxr`] = pxToRem(px)
         return acc
       }, {})
