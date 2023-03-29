@@ -13,10 +13,10 @@ function Item({
 
   return (
     <div className={`${className ?? ''} flex items-center`}>
-      <div className='inline-block w-20pxr h-20pxr border rounded-full mr-6pxr p-3pxr'>
+      <div className='inline-block border rounded-full w-20pxr h-20pxr mr-6pxr p-3pxr'>
         {
           checked === true &&
-          <div className='w-full h-full bg-black rounded-full'></div>
+          <div className='w-full h-full rounded-full bg-primary'></div>
         }
       </div>
       <input
@@ -26,7 +26,10 @@ function Item({
         onChange={onChange}
         className='appearance-none'
       />
-      <label htmlFor={forId}>{children}</label>
+      <label
+        htmlFor={forId}
+        className={`${checked === true ? 'text-primary' : ''}`}
+      >{children}</label>
     </div>
   )
 }

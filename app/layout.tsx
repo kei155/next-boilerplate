@@ -1,6 +1,9 @@
 import ReactQueryProvider from '@/providers/ReactQuery'
 import ToastProvider from '@/providers/Toaster'
+import { Nanum_Gothic } from 'next/font/google'
 import './globals.scss'
+
+const nanumGothic = Nanum_Gothic({ subsets: ['latin'], weight: ['400', '700', '800'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -14,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={nanumGothic.className}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
         <ToastProvider></ToastProvider>
       </body>

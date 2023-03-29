@@ -12,18 +12,16 @@ interface ISelectProps<T = any> extends React.ComponentProps<'select'> {
     textWhenEmpty?: string
 }
 
-export default function Select(
-  {
-    id,
-    label,
-    items,
-    textWhenEmpty,
-    required,
-    value,
-    className,
-    onChange,
-  }: ISelectProps<any>
-) {
+export default function Select({
+  id,
+  label,
+  items,
+  textWhenEmpty,
+  required,
+  value,
+  className,
+  onChange,
+}: ISelectProps<any>) {
   const generatedId = useId()
   const forId = id ?? generatedId
 

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/Link'
 
 const classes = {
   firstListItem: 'pb-16pxr',
@@ -13,32 +13,34 @@ export default function UiTemplateLayout({
 }) {
   return (
     <>
-      <div className="flex">
-        <div className="p-24pxr pr-48pxr">
+      <div className='flex'>
+        <div className='p-24pxr pr-48pxr'>
           <div className='text-xl'>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">UI Template</span>
+            <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400'>UI Template</span>
           </div>
           <ul>
             <li className={classes.firstListItem}>
-              <div className='text-lg'>Form</div>
+              <div className='text-lg'>
+                <Link href='/ui-templates/form'>Form</Link>
+              </div>
               <ul>
                 <li>
-                  <Link href="/ui-templates/form/input">Input</Link>
+                  <Link href='/ui-templates/form#input'>Input</Link>
                 </li>
                 <li>
-                  <Link href="/ui-templates/form/select">Select</Link>
+                  <Link href='/ui-templates/form#select'>Select</Link>
                 </li>
                 <li>
-                  <Link href="/ui-templates/form/checkbox">Checkbox</Link>
+                  <Link href='/ui-templates/form#checkbox'>Checkbox</Link>
                 </li>
                 <li>
-                  <Link href="/ui-templates/form/radio">Radio</Link>
+                  <Link href='/ui-templates/form#radio'>Radio</Link>
                 </li>
               </ul>
             </li>
             <li className={classes.firstListItem}>
               <div className='text-lg'>
-                <Link href="/ui-templates/button">Button</Link>
+                <Link href='/ui-templates/button'>Button</Link>
               </div>
             </li>
           </ul>

@@ -26,7 +26,7 @@ export default function Checkbox({
   return (
     <>
       <div data-form-item className='flex items-center'>
-        <div className='inline-block w-20pxr h-20pxr border mr-6pxr p-2pxr'>
+        <div className='inline-block border w-20pxr h-20pxr mr-6pxr p-2pxr'>
           {
             isChecked &&
             <Image src={checkIcon} alt='선택됨'></Image>
@@ -41,7 +41,10 @@ export default function Checkbox({
         {
           label !== undefined &&
           label !== '' &&
-            <label htmlFor={forId}>{label}</label>
+            <label
+              htmlFor={forId}
+              className={`${isChecked ? 'text-primary' : ''}`}
+            >{label}</label>
         }
       </div>
     </>

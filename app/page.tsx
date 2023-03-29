@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { Nanum_Gothic } from 'next/font/google'
 import styles from './page.module.css'
-import Link from 'next/link'
+import Link from '@/components/Link'
 
-const inter = Inter({ subsets: ['latin'] })
+const nanumGothic = Nanum_Gothic({ subsets: ['latin'], weight: ['400', '700', '800'] })
 
 export default function Home () {
   return (
@@ -59,10 +59,10 @@ export default function Home () {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h2 className={inter.className}>
+          <h2 className={nanumGothic.className}>
                         Docs <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>
+          <p className={nanumGothic.className}>
                         Find in-depth information about Next.js features and
                         API.
           </p>
@@ -74,10 +74,10 @@ export default function Home () {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h2 className={inter.className}>
+          <h2 className={nanumGothic.className}>
                         Templates <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>
+          <p className={nanumGothic.className}>
                         Explore the Next.js 13 playground.
           </p>
         </a>
@@ -88,10 +88,10 @@ export default function Home () {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h2 className={inter.className}>
+          <h2 className={nanumGothic.className}>
                         Deploy <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>
+          <p className={nanumGothic.className}>
                         Instantly deploy your Next.js site to a shareable URL
                         with Vercel.
           </p>
