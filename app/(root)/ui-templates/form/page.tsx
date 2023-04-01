@@ -1,6 +1,7 @@
 'use client'
 
 import { Checkbox, Input, Label, Radio, Select } from '@/components/form'
+import { PageTitle, SectionTitle } from '@/components/semantic'
 import { useState } from 'react'
 
 interface IFruit {
@@ -34,9 +35,10 @@ export default function Page() {
   return (
     <>
       <div>
-        <div className='text-xl'>Form</div>
+        <PageTitle>Form</PageTitle>
+
         <div id='input'>
-          <div>Input (Text, Number...)</div>
+          <SectionTitle>Input (Text, Number...)</SectionTitle>
           <div>
             <Input
               label="배송메세지"
@@ -60,7 +62,7 @@ export default function Page() {
         </div>
 
         <div id='select'>
-          <div>Select</div>
+          <SectionTitle>Select</SectionTitle>
           <div>
             <div>
             선택된 과일 :
@@ -81,10 +83,7 @@ export default function Page() {
         </div>
 
         <div id='checkbox'>
-          <div>Checkbox</div>
-          <div>
-            선택된 포켓몬 : {checkedPokemons.map(pokemon => pokemon.name).join(', ')}
-          </div>
+          <SectionTitle>Checkbox</SectionTitle>
           <Label.Standalone required>포켓몬을 선택하세요</Label.Standalone>
           {
             pokemons.map(({ id, name }) => {
@@ -100,14 +99,13 @@ export default function Page() {
               return <Checkbox key={id} label={name} onChange={handleChange}></Checkbox>
             })
           }
+          <div>
+            선택된 포켓몬 : {checkedPokemons.map(pokemon => pokemon.name).join(', ')}
+          </div>
         </div>
 
         <div id='radio'>
-          <div>Radio</div>
-          <div>
-            선택된 과일 :
-            {JSON.stringify(fruit)}
-          </div>
+          <SectionTitle>Radio</SectionTitle>
           <Label.Standalone required>과일을 골라보세요</Label.Standalone>
           <Radio
             itemClassName='py-4pxr'
@@ -116,7 +114,7 @@ export default function Page() {
             onChangeItem={item => { setFruit(item.value) }}
           ></Radio>
 
-          <Label.Standalone required>과일을 골라보세요</Label.Standalone>
+          <Label.Standalone required>과일을 골라보세요(세로)</Label.Standalone>
           <Radio
             className='flex'
             itemClassName='pr-12pxr'
@@ -124,6 +122,11 @@ export default function Page() {
             items={fruits.map(fruit => ({ key: fruit.value, text: fruit.text, value: fruit }))}
             onChangeItem={item => { setFruit(item.value) }}
           ></Radio>
+
+          <div>
+            선택된 과일 :
+            {JSON.stringify(fruit)}
+          </div>
         </div>
       </div>
     </>

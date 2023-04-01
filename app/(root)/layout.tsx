@@ -1,3 +1,5 @@
+import Footer from '@/components/parts/Footer'
+import Header from '@/components/parts/Header'
 import ReactQueryProvider from '@/providers/ReactQuery'
 import ToastProvider from '@/providers/Toaster'
 import { Nanum_Gothic } from 'next/font/google'
@@ -18,8 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nanumGothic.className}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <div className='flex flex-col justify-between h-screen'>
+            <Header></Header>
+            <main className='pt-70pxr'>{children}</main>
+            <Footer></Footer>
+          </div>
+        </ReactQueryProvider>
         <ToastProvider></ToastProvider>
+        <div id='tooltips'></div>
       </body>
     </html>
   )

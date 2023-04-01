@@ -45,7 +45,7 @@ export default function UiTemplateLayout({
             </li>
           </ul>
         </div>
-        <div>
+        <div className='pt-20pxr'>
           {children}
         </div>
       </div>

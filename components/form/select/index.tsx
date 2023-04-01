@@ -42,7 +42,7 @@ export default function Select({
         <select
           id={forId}
           value={value}
-          className={`${className ?? ''} h-40pxr border pl-16pxr pr-32pxr`}
+          className={`${className ?? ''} h-50pxr border pl-16pxr pr-32pxr`}
           onChange={onChange}
         >
           {

@@ -1,5 +1,7 @@
 import React, { useId } from 'react'
-import { Label } from '@/components/form'
+import { Label, type IControl } from '@/components/form'
+import { type FieldValues, useController } from 'react-hook-form'
+import ErrorMessage from '../ErrorMessage'
 
 interface IInputProps extends React.ComponentProps<'input'> {
     type: 'text'
@@ -11,22 +13,35 @@ interface IInputProps extends React.ComponentProps<'input'> {
     id?: string
     label?: string
     placeholder?: string
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function Input({
+export default function Input<IForm extends FieldValues>({
   id,
   label,
   type,
-  value,
   name,
   className,
   placeholder,
   required,
-  onChange,
-}: IInputProps) {
+  control,
+  onChange: propOnChange,
+  rules,
+}: IInputProps & IControl<IForm>) {
   const generatedId = useId()
   const forId = id ?? generatedId
+
+  const {
+    field,
+    fieldState,
+  } = useController({ name, rules, control })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (propOnChange != null) {
+      propOnChange(e)
+    }
+
+    field.onChange(e)
+  }
 
   return (
     <>
@@ -45,11 +60,13 @@ export default function Input({
         <input
           id={forId}
           type={type}
-          value={value}
-          className={`${className ?? ''} h-40pxr border p-16pxr`}
-          onChange={onChange}
+          value={field.value}
+          className={`${className ?? ''} h-50pxr border p-16pxr outline-none appearance-none`}
+          onChange={handleChange}
+          onBlur={field.onBlur}
           placeholder={placeholder}
         />
+        {fieldState.error != null && <ErrorMessage>{fieldState.error.message}</ErrorMessage>}
       </div>
     </>
   )

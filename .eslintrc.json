@@ -1,6 +1,0 @@
-{
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:prettier/recommended" // plugin과 eslint-config-prettier 설정을 한번에 합니다.
-  ]
-}

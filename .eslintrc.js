@@ -23,6 +23,11 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     'space-before-function-paren': 'off',
     '@typescript-eslint/space-before-function-paren': 'off',
-    '@typescript-eslint/comma-dangle': ['error', 'only-multiline']
+    '@typescript-eslint/comma-dangle': ['error', 'only-multiline'],
+    '@typescript-eslint/no-misused-promises': [2, {
+      checksVoidReturn: {
+        attributes: false
+      }
+    }]
   }
 }

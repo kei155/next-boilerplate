@@ -36,7 +36,7 @@ module.exports = {
   plugins: [
     require('@tailwindcss/typography'),
     require('@tailwindcss/line-clamp'),
-    plugin(({ addUtilities }) => {
+    plugin(({ addUtilities, addVariant }) => {
       addUtilities({
         '.scrollbar-hide': {
           'scrollbar-width': 'none',
@@ -46,6 +46,8 @@ module.exports = {
           }
         }
       })
+
+      addVariant('search-cancel', '&::-webkit-search-cancel-button')
     })
   ]
 }
