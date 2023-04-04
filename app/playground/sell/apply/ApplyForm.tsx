@@ -10,6 +10,7 @@ import { SectionTitle } from '@/components/semantic'
 import { type ConfirmationResult, RecaptchaVerifier } from 'firebase/auth'
 import useFirebase from '@/hooks/useFirebase'
 import useSnackBar from '@/hooks/useSnackBar'
+import useAxios from '@/hooks/useAxios'
 
 declare const window: Window & typeof globalThis & {
   confirmationResult: undefined | ConfirmationResult
@@ -44,6 +45,7 @@ export default function ApplyForm() {
   const { data: signingAgreementsData, isLoading } = useQuery<ISigningAgreementResponse>('/api/signing-agreements')
 
   const { toast } = useSnackBar()
+  const axios = useAxios()
 
   const {
     control,
@@ -136,6 +138,13 @@ export default function ApplyForm() {
       })
   }
 
+  function test() {
+    axios
+      .post('/api/seller/apply')
+      .then(console.log)
+      .catch(console.error)
+  }
+
   return (
     <>
       <form
@@ -144,7 +153,19 @@ export default function ApplyForm() {
       >
         <section className='pb-16pxr'>
           <SectionTitle>약관 동의</SectionTitle>
-          {isLoading && <div>loading...</div>}
+          {isLoading && [1, 2].map(_ => (
+            <div key={_} className='pb-16pxr last:pb-0pxr'>
+              <div className='text-lg pb-4pxr'>
+                <span className='bg-gray-200 text-gray-200'>개인정보 수집 및 이용 동의</span>
+              </div>
+              <div className='py-55pxr bg-gray-200'></div>
+              <div className='py-50pxr bg-gray-200'></div>
+
+              <div className='my-8pxr'>
+                <span className='bg-gray-200 text-gray-200'>개인정보 수집 및 이용 동의에 동의합니다</span>
+              </div>
+            </div>
+          ))}
           {signingAgreementsData?.signing_agreements.map((signingAgreement, index) => (
             <div
               key={signingAgreement.type}
@@ -192,7 +213,7 @@ export default function ApplyForm() {
                 <p className='pl-20pxr'>
                     20% 이하의 쿠폰 사용 시 쿠폰 할인 금액의 50% 셀러 부담, 50% 쇼핑몰에서 지원하며<br/>
                     20% 초과의 쿠폰 사용 시 셀러는 최대 10% 부담하며 초과 쿠폰 금액은 쇼핑몰에서 지원합니다.<br/>
-                    (예시 : 30% 쿠폰 사용 시 10% 셀러 부담 20% 브랜디 부담)
+                    (예시 : 30% 쿠폰 사용 시 10% 셀러 부담 20% 쇼핑몰 부담)
                 </p>
                 <p className='pl-20pxr'>별도의 협의를 통해 해당 내용은 변경될 수 있습니다.</p>
               </li>
@@ -364,7 +385,11 @@ export default function ApplyForm() {
         </section>
 
         <PrimaryButton type='submit' size='normal' pending={isSubmitting}>신청완료</PrimaryButton>
-        <SecondaryButton type='button' size='normal'>임시저장</SecondaryButton>
+        <SecondaryButton
+          type='button'
+          size='normal'
+          onClick={test}
+        >임시저장</SecondaryButton>
       </form>
     </>
   )

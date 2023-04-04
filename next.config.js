@@ -10,6 +10,14 @@ const nextConfig = {
         hostname: 'assets.eineed.studio'
       }
     ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:56666/api/:path*',
+      }
+    ]
   }
 }
 
