@@ -12,7 +12,7 @@ export default async function Page() {
             <div>입점 신청</div>
           </div>
         </section>
-        <section>
+        <section className='max-w-3xl mx-auto'>
           <ApplyForm></ApplyForm>
         </section>
         <section>

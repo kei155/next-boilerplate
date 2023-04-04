@@ -14,7 +14,8 @@ module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}'
+    './components/**/*.{js,ts,jsx,tsx}',
+    './hooks/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -23,6 +24,20 @@ module.exports = {
         secondary: '#FFC6D3',
         backup: '#FEA1BF',
         backback: '#E98EAD'
+      },
+      animation: {
+        enter: 'enter 1s linear',
+        leave: 'leave 1s linear'
+      },
+      keyframes: {
+        enter: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        leave: {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        }
       }
     },
 

@@ -47,7 +47,7 @@ export default function Input<IForm extends FieldValues>({
     <>
       <div
         data-form-item
-        className="relative py-8pxr"
+        className={`${className ?? ''} relative py-8pxr`}
       >
         {
           label !== undefined &&

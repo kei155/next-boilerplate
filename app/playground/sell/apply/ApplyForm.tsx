@@ -1,34 +1,70 @@
 'use client'
 
-import nl2br from 'react-nl2br'
 import { type ISigningAgreementResponse } from '@/app/api/signing-agreements/route'
 import { PrimaryButton, SecondaryButton } from '@/components/button'
 import { useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Checkbox, Input } from '@/components/form'
 import { SectionTitle } from '@/components/semantic'
+import { type ConfirmationResult, RecaptchaVerifier } from 'firebase/auth'
+import useFirebase from '@/hooks/useFirebase'
+import useSnackBar from '@/hooks/useSnackBar'
+
+declare const window: Window & typeof globalThis & {
+  confirmationResult: undefined | ConfirmationResult
+  recaptchaVerifier: undefined | RecaptchaVerifier
+}
 
 export interface IApplyForm {
-    phone: string
     signing_agreements: Array<{
         type: string
         agree: boolean
     }>
+
+    email: string
+    password: string
+    password_confirmation: string
+    phone: string
+    sms_code: string
+
+    name: string
+    eng_name: string
+    cs_tel: string
+    web_url: string
+    kakao_channel_id?: string
+    instagram_id?: string
 }
 
 export default function ApplyForm() {
+  const { auth, signInWithPhoneNumber } = useFirebase()
+  const [isSmsSent, setIsSmsSent] = useState(false)
+  const [isSmsChecked, setIsSmsChecked] = useState(false)
+
   const { data: signingAgreementsData, isLoading } = useQuery<ISigningAgreementResponse>('/api/signing-agreements')
+
+  const { toast } = useSnackBar()
 
   const {
     control,
     setValue,
+    getValues,
     formState: { isSubmitting },
     handleSubmit: onSubmit
   } = useForm<IApplyForm>({
     mode: 'onBlur',
     defaultValues: {
+      email: '',
+      password: '',
+      password_confirmation: '',
+      name: '',
+      eng_name: '',
+      cs_tel: '',
+      web_url: '',
+      kakao_channel_id: '',
+      instagram_id: '',
       phone: '',
+      sms_code: '',
       signing_agreements: []
     }
   })
@@ -51,6 +87,53 @@ export default function ApplyForm() {
         resolve()
       }, 1000)
     })
+  }
+
+  useEffect(() => {
+    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+      size: 'invisible',
+    }, auth)
+  }, [])
+
+  const sendSmsAuth = async () => {
+    const phone = getValues('phone')
+    if (phone === '' || window.recaptchaVerifier == null) {
+      return
+    }
+
+    auth.useDeviceLanguage()
+    signInWithPhoneNumber(auth, `+82${phone}`, window.recaptchaVerifier)
+      .then(result => {
+        window.confirmationResult = result
+        setIsSmsSent(true)
+        toast.success('입력하신 전화번호로 인증번호가 발송되었어요!')
+      })
+      .catch(err => { console.error(err) })
+  }
+
+  const checkSmsAuth = async () => {
+    const smsCode = getValues('sms_code')
+    if (smsCode === '') {
+      return
+    }
+
+    if (window.confirmationResult == null) {
+      return
+    }
+
+    window.confirmationResult.confirm(smsCode)
+      .then(() => {
+        setIsSmsChecked(true)
+        toast.success('인증번호 확인이 완료되었어요')
+      })
+      .catch(err => {
+        console.error(err)
+        if (err instanceof Error) {
+          toast.error(err.message)
+        } else {
+          toast.error(JSON.stringify(err))
+        }
+      })
   }
 
   return (
@@ -128,16 +211,156 @@ export default function ApplyForm() {
         <section className='pb-16pxr'>
           <SectionTitle>판매자 정보</SectionTitle>
           <Input<IApplyForm>
-            name='phone'
+            name='email'
             control={control}
             className='w-full'
-            type='text'
-            placeholder="연락처(휴대폰 번호)"
+            type='email'
+            label='로그인용 이메일'
+            required
+            placeholder="myshop@example.com"
             rules={{
-              required: '연락처를 입력해주세요'
+              required: '로그인용 이메일을 입력해주세요'
+            }}
+          ></Input>
+          <Input<IApplyForm>
+            name='password'
+            control={control}
+            className='w-full'
+            type='password'
+            label='비밀번호'
+            required
+            placeholder="************"
+            rules={{
+              required: '비밀번호를 입력해주세요'
+            }}
+          ></Input>
+          <Input<IApplyForm>
+            name='password_confirmation'
+            control={control}
+            className='w-full'
+            type='password'
+            label='비밀번호 확인'
+            required
+            placeholder="************"
+            rules={{
+              required: '비밀번호 확인을 입력해주세요'
             }}
           ></Input>
 
+          <div className='flex items-center'>
+            <Input<IApplyForm>
+              name='phone'
+              control={control}
+              className='w-full flex-1'
+              type='text'
+              label='연락처(휴대폰 번호)'
+              required
+              placeholder="01012345678"
+              rules={{
+                required: '연락처를 입력해주세요'
+              }}
+            ></Input>
+            <SecondaryButton
+              type='button'
+              size='normal'
+              onClick={sendSmsAuth}
+              disabled={isSmsSent}
+            >인증요청</SecondaryButton>
+            <div id='recaptcha-container'></div>
+          </div>
+          {isSmsSent && (
+            <>
+              <div className='flex items-center'>
+                <Input
+                  name='sms_code'
+                  control={control}
+                  className='w-full flex-1'
+                  type='text'
+                  label='인증번호'
+                  required
+                  placeholder='숫자 6자리'
+                ></Input>
+                <SecondaryButton
+                  type='button'
+                  size='normal'
+                  onClick={checkSmsAuth}
+                  disabled={isSmsChecked}
+                >{ isSmsChecked ? '인증완료' : '인증번호 확인' }</SecondaryButton>
+              </div>
+            </>
+          )}
+
+        </section>
+
+        <section className='pb-16pxr'>
+          <SectionTitle>입점업체 정보</SectionTitle>
+
+          <Input<IApplyForm>
+            name='name'
+            control={control}
+            className='w-full'
+            type='text'
+            label='업체명(국문)'
+            required
+            placeholder="오 마이 티셔츠"
+            rules={{
+              required: '업체명을 입력해주세요'
+            }}
+          ></Input>
+          <Input<IApplyForm>
+            name='eng_name'
+            control={control}
+            className='w-full'
+            type='text'
+            label='업체명(영문)'
+            required
+            placeholder="Oh my T-shirt"
+            rules={{
+              required: '업체명을 입력해주세요'
+            }}
+          ></Input>
+          <Input<IApplyForm>
+            name='cs_tel'
+            control={control}
+            className='w-full'
+            type='text'
+            label='고객상담 연락처'
+            required
+            placeholder="021234567"
+            rules={{
+              required: '고객상담 연락처를 입력해주세요'
+            }}
+          ></Input>
+          <Input<IApplyForm>
+            name='web_url'
+            control={control}
+            className='w-full'
+            type='text'
+            label='업체 사이트 URL'
+            required
+            placeholder="홈페이지, 블로그 등"
+            rules={{
+              required: '업체 사이트 URL을 입력해주세요'
+            }}
+          ></Input>
+
+          <Input<IApplyForm>
+            name='kakao_channel_id'
+            control={control}
+            className='w-full'
+            type='text'
+            label='카카오 채널 ID(선택)'
+            placeholder="kakaofriend"
+          ></Input>
+
+          <Input<IApplyForm>
+            name='instagram_id'
+            control={control}
+            className='w-full'
+            type='text'
+            label='인스타그램 ID(선택)'
+            placeholder="oh.my.t-shirt"
+          ></Input>
         </section>
 
         <PrimaryButton type='submit' size='normal' pending={isSubmitting}>신청완료</PrimaryButton>

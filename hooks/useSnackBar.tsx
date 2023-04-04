@@ -1,6 +1,6 @@
 'use client'
 
-import toast from 'react-hot-toast'
+import toast, { CheckmarkIcon, ErrorIcon } from 'react-hot-toast'
 
 export default function useSnackBar() {
   const base = (message: string) => {
@@ -36,13 +36,21 @@ export default function useSnackBar() {
       ),
       {
         duration: 5000,
-        style: {
-          minWidth: '400px',
-          maxWidth: '400px',
-          borderRadius: '6px',
-          background: '#dedede',
-          color: 'black',
-        },
+      }
+    )
+  }
+
+  const error = (message: string) => {
+    toast(
+      (toast) => (
+        <DefaultSnackBar
+          visible={toast.visible}
+          status={'Error'}
+          message={message}
+          id={toast.id} />
+      ),
+      {
+        duration: 700000,
       }
     )
   }
@@ -51,6 +59,7 @@ export default function useSnackBar() {
     toast: {
       base,
       success,
+      error,
     }
   }
 }
@@ -59,7 +68,7 @@ interface IToastProps {
     id: string
     visible: boolean
     status: string
-    message: string
+    message: React.ReactNode
 }
 
 const DefaultSnackBar = ({
@@ -69,15 +78,13 @@ const DefaultSnackBar = ({
   message,
 }: IToastProps) => {
   return (
-    <div className={
-      `${visible ? 'animate-spin' : 'animate-bounce'}`
-    }>
-      <div>
-        <span>[{visible ? 'true' : 'false'}][{status}] {message}</span>
-      </div>
-      <button onClick={() => { toast.dismiss(id) }}>
-        닫기
-      </button>
+    <div
+      className='bg-white pointer-events-auto flex gap-20pxr'
+    >
+      {status === 'Error' && <ErrorIcon></ErrorIcon>}
+      {status === 'Success' && <CheckmarkIcon></CheckmarkIcon>}
+      <div className='flex-1'>{message}</div>
+      <button className='text-gray-500' onClick={() => { toast.dismiss(id) }}>닫기</button>
     </div>
   )
 }
